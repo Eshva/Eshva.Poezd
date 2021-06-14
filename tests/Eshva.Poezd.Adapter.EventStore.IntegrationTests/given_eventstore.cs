@@ -16,8 +16,14 @@ using Xunit;
 
 namespace Eshva.Poezd.Adapter.EventStore.IntegrationTests
 {
+  [Collection(EventStoreSetupCollection.Name)]
   public class given_eventstore
   {
+    public given_eventstore(EventStoreSetupContainerAsyncFixture fixture)
+    {
+      _fixture = fixture;
+    }
+
     [Fact]
     public async Task when_setup_connection_it_should_handle_messages_from_eventstore()
     {
@@ -84,5 +90,7 @@ namespace Eshva.Poezd.Adapter.EventStore.IntegrationTests
     }
 
     private Task PublishMessage() => Task.CompletedTask;
+
+    private readonly EventStoreSetupContainerAsyncFixture _fixture;
   }
 }

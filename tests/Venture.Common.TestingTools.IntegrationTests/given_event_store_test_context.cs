@@ -21,14 +21,13 @@ namespace Venture.Common.TestingTools.IntegrationTests
     public given_event_store_test_context(EventStoreSetupContainerAsyncFixture fixture)
     {
       _fixture = fixture;
-      _client = new EventStoreClient(EventStoreClientSettings.Create(@$"esdb://{HostName}:{_fixture.ExposedHttpPort}?tls={IsSecure}"));
     }
 
     [Fact]
     public async Task when_append_to_stream_it_should_append_event_to_specified_stream()
     {
       var timeout = Cancellation.TimeoutToken(TimeSpan.FromSeconds(value: 5));
-      var testContext = new EventStoreTestContext(HostName, _fixture.ExposedHttpPort);
+      var testContext = new EventStoreTestContext(_fixture.Client);
 
       const string eventPayload = "event payload";
       const string eventType = "Create";
@@ -45,7 +44,7 @@ namespace Venture.Common.TestingTools.IntegrationTests
         streamName,
         timeout);
 
-      var result = _client.ReadStreamAsync(
+      var result = _fixture.Client.ReadStreamAsync(
         Direction.Forwards,
         streamName,
         StreamPosition.Start);
@@ -57,10 +56,6 @@ namespace Venture.Common.TestingTools.IntegrationTests
       eventRecord.EventType.Should().Be(eventType);
     }
 
-    private readonly EventStoreClient _client;
     private readonly EventStoreSetupContainerAsyncFixture _fixture;
-
-    private const bool IsSecure = false;
-    private const string HostName = "localhost";
   }
 }

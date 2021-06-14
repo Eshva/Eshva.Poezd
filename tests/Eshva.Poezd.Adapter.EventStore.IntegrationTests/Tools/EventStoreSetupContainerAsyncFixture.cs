@@ -2,14 +2,13 @@
 
 using System.Threading.Tasks;
 using Eshva.Common.Testing;
-using EventStore.Client;
 using JetBrains.Annotations;
 using Venture.Common.TestingTools.EventStore;
 using Xunit;
 
 #endregion
 
-namespace Venture.Common.TestingTools.IntegrationTests
+namespace Eshva.Poezd.Adapter.EventStore.IntegrationTests.Tools
 {
   [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
   public class EventStoreSetupContainerAsyncFixture : IAsyncLifetime
@@ -26,36 +25,13 @@ namespace Venture.Common.TestingTools.IntegrationTests
         });
     }
 
-    public string ContainerName { get; }
-
-    public string HostName { get; set; } = "localhost";
-
     public ushort ExposedHttpPort { get; }
 
-    public bool IsSecure { get; set; }
+    public string ContainerName { get; }
 
-    public EventStoreClient Client { get; private set; }
+    public Task InitializeAsync() => _container.StartAsync();
 
-    public string ConnectionString { get; private set; }
-
-    public async Task InitializeAsync()
-    {
-      await _container.StartAsync();
-      RecreateClient();
-    }
-
-    public async Task DisposeAsync()
-    {
-      if (Client != null) await Client.DisposeAsync();
-      await _container.DisposeAsync();
-    }
-
-    private void RecreateClient()
-    {
-      Client?.Dispose();
-      ConnectionString = @$"esdb://{HostName}:{ExposedHttpPort}?tls={IsSecure}";
-      Client = new EventStoreClient(EventStoreClientSettings.Create(ConnectionString));
-    }
+    public async Task DisposeAsync() => await _container.DisposeAsync();
 
     private readonly EventStoreDockerContainer _container;
   }

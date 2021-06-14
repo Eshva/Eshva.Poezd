@@ -1,8 +1,10 @@
 #region Usings
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
+using JetBrains.Annotations;
 
 #endregion
 
@@ -10,36 +12,21 @@ namespace Venture.Common.TestingTools.EventStore
 {
   public class EventStoreTestContext
   {
-    public EventStoreTestContext(
-      string hostName = "localhost",
-      ushort port = 2113,
-      bool isSecure = false)
+    public EventStoreTestContext([NotNull] EventStoreClient client)
     {
-      _settings = EventStoreClientSettings.Create(@$"esdb://{hostName}:{port}?tls={isSecure}");
+      _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
     public Task<IWriteResult> AppendToStream(
       EventData @event,
       string streamName,
-      CancellationToken cancellationToken)
-    {
-      EnsureClient();
-
-      return _client.AppendToStreamAsync(
+      CancellationToken cancellationToken) =>
+      _client.AppendToStreamAsync(
         streamName,
         StreamState.NoStream,
         new[] {@event},
         cancellationToken: cancellationToken);
-    }
 
-    private void EnsureClient()
-    {
-      if (_client != null) return;
-
-      _client = new EventStoreClient(_settings);
-    }
-
-    private readonly EventStoreClientSettings _settings;
-    private EventStoreClient _client;
+    private readonly EventStoreClient _client;
   }
 }
