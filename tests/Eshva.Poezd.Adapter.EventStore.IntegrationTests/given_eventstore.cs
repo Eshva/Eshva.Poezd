@@ -61,7 +61,7 @@ namespace Eshva.Poezd.Adapter.EventStore.IntegrationTests
                 .WithId("test-eventstoredb-server")
                 .Ingress(
                   ingress => ingress
-                    .WithEventStoreDbDriver(
+                    .WithEventStoreDriver(
                       driver => driver
                         .WithConnection(connectionConfiguration)
                         .WithHeaderValueCodec<Utf8ByteStringHeaderValueCodec>())

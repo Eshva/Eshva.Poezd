@@ -10,7 +10,7 @@ namespace Eshva.Poezd.Adapter.EventStore.Ingress
 {
   public static class IngressConfiguratorExtensions
   {
-    public static BrokerIngressConfigurator WithEventStoreDbDriver(
+    public static BrokerIngressConfigurator WithEventStoreDriver(
       this BrokerIngressConfigurator brokerIngress,
       [NotNull] Action<BrokerIngressEventStoreDriverConfigurator> configurator)
     {

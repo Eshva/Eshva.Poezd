@@ -27,7 +27,7 @@ namespace Venture.Common.TestingTools.IntegrationTests
     [Fact]
     public void when_constructed_with_valid_arguments_it_should_produce_instance_with_expected_state()
     {
-      var configuration = CreateEventStoreDbContainerConfiguration();
+      var configuration = CreateEventStoreContainerConfiguration();
       var sut = new EventStoreDockerContainer(configuration);
 
       sut.Configuration.Should().Be(configuration, "constructor should assign container configuration");
@@ -40,24 +40,24 @@ namespace Venture.Common.TestingTools.IntegrationTests
 
       var containers = await GetRunningContainers();
       containers.Should().NotContain(
-        container => container.Names.Any(name => name.Contains(_eventStoreDbContainerName)),
+        container => container.Names.Any(name => name.Contains(_eventStoreContainerName)),
         "container shouldn't be started yet");
 
-      var configuration = CreateEventStoreDbContainerConfiguration();
+      var configuration = CreateEventStoreContainerConfiguration();
       var sut = new EventStoreDockerContainer(configuration);
 
       await sut.StartAsync(timeout);
 
       containers = await GetRunningContainers();
       containers.Should().Contain(
-        container => container.Names.Any(name => name.Contains(_eventStoreDbContainerName)),
+        container => container.Names.Any(name => name.Contains(_eventStoreContainerName)),
         "container should be started");
 
       await sut.StopAsync(timeout);
 
       containers = await GetRunningContainers();
       containers.Should().NotContain(
-        container => container.Names.Any(name => name.Contains(_eventStoreDbContainerName)),
+        container => container.Names.Any(name => name.Contains(_eventStoreContainerName)),
         "container should be stopped");
     }
 
@@ -66,15 +66,15 @@ namespace Venture.Common.TestingTools.IntegrationTests
     private Task<IList<ContainerListResponse>> GetRunningContainers() =>
       _dockerClient.Containers.ListContainersAsync(new ContainersListParameters());
 
-    private EventStoreDockerContainerConfiguration CreateEventStoreDbContainerConfiguration() =>
+    private EventStoreDockerContainerConfiguration CreateEventStoreContainerConfiguration() =>
       new EventStoreDockerContainerConfiguration
       {
-        ContainerName = _eventStoreDbContainerName,
+        ContainerName = _eventStoreContainerName,
         ExposedHttpPort = _exposedHttpPort
       };
 
     private readonly DockerClient _dockerClient;
-    private readonly string _eventStoreDbContainerName = $"test-eventstore-{Randomize.String(length: 10)}";
+    private readonly string _eventStoreContainerName = $"test-eventstore-{Randomize.String(length: 10)}";
     private readonly ushort _exposedHttpPort = NetworkTools.GetFreeTcpPort(rangeStart: 51000);
   }
 }
