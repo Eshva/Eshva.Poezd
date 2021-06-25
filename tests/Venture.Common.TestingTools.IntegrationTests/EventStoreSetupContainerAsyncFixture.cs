@@ -54,7 +54,10 @@ namespace Venture.Common.TestingTools.IntegrationTests
     {
       Client?.Dispose();
       ConnectionString = @$"esdb://{HostName}:{ExposedHttpPort}?tls={IsSecure}";
-      Client = new EventStoreClient(EventStoreClientSettings.Create(ConnectionString));
+      var settings = EventStoreClientSettings.Create(ConnectionString);
+      settings.ConnectionName = ContainerName;
+      // settings.DefaultCredentials = new UserCredentials(@"admin", @"changeit");
+      Client = new EventStoreClient(settings);
     }
 
     private readonly EventStoreDockerContainer _container;

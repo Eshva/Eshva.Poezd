@@ -11,7 +11,7 @@ namespace Eshva.Poezd.Adapter.EventStore.Ingress
 {
   public class BrokerIngressEventStoreDriverConfiguration : IMessageRouterConfigurationPart
   {
-    public EventStoreConnectionConfiguration ConnectionConfiguration { get; internal set; }
+    public string ConnectionString { get; internal set; }
 
     public Type HeaderValueCodecType { get; internal set; }
 

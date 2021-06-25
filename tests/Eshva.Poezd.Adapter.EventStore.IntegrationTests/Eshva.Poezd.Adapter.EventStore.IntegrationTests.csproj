@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Eshva.Common.Testing" Version="1.2.0" />
     <PackageReference Include="Eshva.Common.Tpl" Version="1.2.0" />
+    <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="21.2.0" />
+    <PackageReference Include="EventStore.Client.Grpc.ProjectionManagement" Version="21.2.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="xunit" Version="2.4.1" />

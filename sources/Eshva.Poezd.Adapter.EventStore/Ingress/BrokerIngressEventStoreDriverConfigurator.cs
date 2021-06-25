@@ -11,9 +11,9 @@ namespace Eshva.Poezd.Adapter.EventStore.Ingress
       _configuration = configuration;
     }
 
-    public BrokerIngressEventStoreDriverConfigurator WithConnection(EventStoreConnectionConfiguration connectionConfiguration)
+    public BrokerIngressEventStoreDriverConfigurator WithConnection(string connectionString)
     {
-      _configuration.ConnectionConfiguration = connectionConfiguration;
+      _configuration.ConnectionString = connectionString;
       return this;
     }
 

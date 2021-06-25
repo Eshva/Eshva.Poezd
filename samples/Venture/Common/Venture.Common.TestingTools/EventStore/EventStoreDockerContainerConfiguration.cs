@@ -15,9 +15,13 @@ namespace Venture.Common.TestingTools.EventStore
     public override IReadOnlyCollection<KeyValuePair<string, string>> GetVariables() => new Dictionary<string, string>
     {
       {"EVENTSTORE_START_STANDARD_PROJECTIONS", "true"},
+      {"EVENTSTORE_RUN_PROJECTIONS", "All"},
       {"EVENTSTORE_INSECURE", "true"},
       {"EVENTSTORE_CLUSTER_SIZE", "1"},
-      {"EVENTSTORE_MEM_DB", "true"}
+      {"EVENTSTORE_MEM_DB", "true"},
+      // {"EVENTSTORE_SKIP_DB_VERIFY", "true"},
+      // {"EVENTSTORE_DISABLE_HTTP_CACHING", "true"},
+      {"EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP", "true"}
     };
 
     public override ushort[] GetExposedPorts() => new[] {ExposedHttpPort};

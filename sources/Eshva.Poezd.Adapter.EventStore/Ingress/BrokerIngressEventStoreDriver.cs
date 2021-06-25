@@ -67,7 +67,7 @@ namespace Eshva.Poezd.Adapter.EventStore.Ingress
     private void CreateAndRegisterStreamSubscriptions<TKey, TValue>(IIngressApi api) =>
       _streamSubscriptionRegistry.Add(
         api,
-        _apiStreamSubscriptionFactory.Create<TKey, TValue>(_driverConfiguration.ConnectionConfiguration, api));
+        _apiStreamSubscriptionFactory.Create<TKey, TValue>(_driverConfiguration.ConnectionString, api));
 
     private readonly BrokerIngressEventStoreDriverConfiguration _driverConfiguration;
     private readonly IStreamSubscriptionRegistry _streamSubscriptionRegistry;
@@ -86,6 +86,6 @@ namespace Eshva.Poezd.Adapter.EventStore.Ingress
 
   internal interface IStreamSubscriptionFactory
   {
-    IStreamSubscription Create<TKey, TValue>(EventStoreConnectionConfiguration connectionConfiguration, IIngressApi api);
+    IStreamSubscription Create<TKey, TValue>(string connectionString, IIngressApi api);
   }
 }
